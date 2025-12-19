@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  coinsync:
+    build: .
+    container_name: coinsync
+    ports:
+      - "80:80"
+    restart: always
