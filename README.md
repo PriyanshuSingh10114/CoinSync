@@ -14,19 +14,26 @@ CoinSync is a simple and stylish web-based currency converter that allows users 
 - Intuitive user experience with quick conversions ⚡
 
 ## 🏗️ Project Structure
+
 coinsync-currency-converter/
+
 ├── CC.html # Main HTML file for the app UI
+
 ├── CC.css # Stylesheet for the app
+
 ├── CC.js # Main JavaScript logic for currency conversion
+
 ├── countryCC.js # Currency code to country code mapping
 
-text
+
 
 ## 🚀 Usage
 
 1. Clone or download the repository
    ```bash
+   
    git clone https://github.com/yourusername/coinsync-currency-converter.git
+   
 Open CC.html in your web browser
 
 Enter the amount, select the currencies
@@ -34,9 +41,11 @@ Enter the amount, select the currencies
 Click "Get Exchange Rate" to see the conversion
 
 🌐 Live Demo
+
 Try CoinSync Live! (Add your live demo link here)
 
 📦 Dependencies
+
 Font Awesome for icons ✨
 
 ExchangeRate-API for exchange rates 💹
