@@ -1,59 +1,170 @@
-# 💰 CoinSync Currency Converter
+🚀 CoinSync – Deployment on AWS EC2 using Docker
 
-![Currency Converter](https://img.shields.io/badge/CoinSync-Currency%20Converter-blue) 
-![Version](https://img.shields.io/badge/version-1.0.0-green)
+This document provides a step-by-step guide to deploy the CoinSync static web application (HTML, CSS, JavaScript) on an AWS EC2 Ubuntu instance using Docker and Nginx.
 
-CoinSync is a simple and stylish web-based currency converter that allows users to convert between different currencies using real-time exchange rates. 🌍💱
+📌 Tech Stack
 
-## ✨ Features
+-- Frontend: HTML, CSS, JavaScript
 
-- Convert between **100+ currencies** with ease
-- **Real-time exchange rates** via ExchangeRate-API 📈
-- Country flags displayed for each currency 🇺🇸🇪🇺🇯🇵
-- Clean, responsive, and modern UI 🎨
-- Intuitive user experience with quick conversions ⚡
+-- Web Server: Nginx
 
-## 🏗️ Project Structure
+-- Containerization: Docker
 
-coinsync-currency-converter/
+-- Cloud Platform: AWS EC2 (Ubuntu 22.04)
 
-├── CC.html # Main HTML file for the app UI
+🏗️ Architecture Overview
 
-├── CC.css # Stylesheet for the app
+      User Browser
+           ↓
+      EC2 Public IP
+           ↓
+      Docker Container
+           ↓
+      Nginx
+           ↓
+      HTML / CSS / JS
 
-├── CC.js # Main JavaScript logic for currency conversion
+🔐 Prerequisites
 
-├── countryCC.js # Currency code to country code mapping
+-- AWS Account
+
+-- EC2 Ubuntu Instance (22.04)
+
+-- GitHub repository access
+
+-- EC2 Security Group:
+
+      SSH (22)
+      
+      HTTP (80)
+
+⚙️ Step 1: Launch EC2 Instance
+
+      Launch an Ubuntu 22.04 LTS EC2 instance
+      
+      Instance type: t2.micro (Free Tier)
+      
+      Attach a key pair (.pem)
+      
+      Configure Security Group:
+      
+      SSH   22   My IP
+      HTTP  80   Anywhere
+
+🔑 Step 2: Connect to EC2
+
+      chmod 400 key.pem
+      ssh -i key.pem ubuntu@<EC2_PUBLIC_IP>
+
+🔄 Step 3: Update System
+
+      sudo apt update -y && sudo apt upgrade -y
+
+🐳 Step 4: Install Docker
+
+      sudo apt install docker.io -y
+
+Enable Docker:
+
+      sudo systemctl start docker
+      sudo systemctl enable docker
+
+Fix permissions:
+
+    sudo usermod -aG docker ubuntu && newgrp docker
 
 
+Verify:
 
-## 🚀 Usage
+      docker --version
 
-1. Clone or download the repository
-   ```bash
-   
-   git clone https://github.com/yourusername/coinsync-currency-converter.git
-   
-Open CC.html in your web browser
+📦 Step 5: Install Git
 
-Enter the amount, select the currencies
+      sudo apt install git -y
 
-Click "Get Exchange Rate" to see the conversion
+📥 Step 6: Clone Repository
 
-🌐 Live Demo
+      git clone https://github.com/PriyanshuSingh10114/CoinSync.git
+      
+      cd CoinSync
 
-Try CoinSync Live! (Add your live demo link here)
+📝 Step 7: Prepare Project
 
-📦 Dependencies
+Ensure the main HTML file is named:
 
-Font Awesome for icons ✨
+index.html
 
-ExchangeRate-API for exchange rates 💹
 
-FlagsAPI for country flags 🏳️
+(Nginx serves index.html by default)
 
-📝 License
-This project is for educational purposes only. All rights reserved © CoinSync 2025.
+🐋 Step 8: Create Dockerfile
 
-🤝 Contributing
-Contributions are welcome! Please open an issue or pull request for any improvements.
+Create a file named Dockerfile in the project root:
+
+      FROM nginx:alpine
+      
+      RUN rm -rf /usr/share/nginx/html/*
+      
+      COPY . /usr/share/nginx/html
+      
+      EXPOSE 80
+      
+      CMD ["nginx", "-g", "daemon off;"]
+
+🚫 Step 9: (Optional) Create
+
+      .dockerignore
+      .git
+      .gitignore
+      README.md
+      node_modules
+
+🧱 Step 10: Build Docker Image
+
+      docker build -t coinsync-app .
+
+▶️ Step 11: Run Docker Container
+
+      docker run -d \
+        --restart always \
+        -p 80:80 \
+        --name coinsync \
+        coinsync-app
+
+
+Verify:
+
+      docker ps
+
+🌐 Step 12: Access Application
+
+Open your browser and visit:
+
+      http://<EC2_PUBLIC_IP>
+
+
+🎉 CoinSync is now live!
+
+🔁 (Optional) Using Docker Compose
+
+      docker-compose.yml
+      version: "3.8"
+      
+      services:
+        coinsync:
+          build: .
+          container_name: coinsync
+          ports:
+            - "80:80"
+          restart: always
+
+
+Run:
+
+      docker-compose up -d --build
+
+🧪 Debugging Commands
+
+      docker ps
+      docker logs coinsync
+      docker exec -it coinsync ls /usr/share/nginx/html
